@@ -28,10 +28,10 @@ A sleek and modern currency converter built with Next.js and React.
 ### Installation
 
 1. Clone the repository: git clone https://github.com/your-username/currency-converter.git
-2. Navigate to the project directory: cd currency-converter
+2. Navigate to the project directory: `cd currency-converter`
 3. Install dependencies: npm install
 4. Create a `.env` file in the root directory and add your ExchangeRate-API key: EXCHANGE_RATE_API_KEY=your_api_key_here
-5. Run the development server:  /b npm run dev /b
+5. Run the development server:  `npm run dev`
 6. Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
 
 ## Usage

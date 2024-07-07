@@ -1,6 +1,9 @@
 # Currency Converter
 
-A sleek and modern currency converter built with Next.js and React.
+A simple and modern currency converter built with Next.js and React.
+
+![image](https://github.com/shakedshoshan/currency-converter/assets/121875226/19a85233-d386-4b7d-bbd7-9e7a52c50440)
+
 
 ## Features
 

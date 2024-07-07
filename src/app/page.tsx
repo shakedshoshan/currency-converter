@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+require("dotenv").config();
 // Array of currency codes
 const currencyCodes = [
   null,"AED", "AFN", "ALL", "AMD", "ANG", "AOA", "ARS", "AUD", "AWG", "AZN",
@@ -25,30 +26,56 @@ const currencyCodes = [
 export default function Home() {
     const [amount, setAmount] = useState(100);
     const [fromCurrency, setFromCurrency] = useState("USD");
-    const [toCurrency, setToCurrency] = useState("GBA");
-    const [result, setResult] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
+    const [toCurrency, setToCurrency] = useState("GBP");
+    const [result, setResult] = useState(`100 USD = 78.13 GBP`);
 
     const handleSwapCurrencies = () => {
       setFromCurrency(toCurrency);
       setToCurrency(fromCurrency);
   }
+
+  const getExchangeRate = async () =>{
+    const API_URL = `https://v6.exchangerate-api.com/v6/29f0d35ec8320c1eb15122f8/pair/${fromCurrency}/${toCurrency}`;
+    try{
+      const response = await fetch(API_URL);
+      if(!response.ok) throw new Error("Somthing not good!");
+      const data = await response.json();
+      const rate = (data.conversion_rate * amount).toFixed(2);
+      setResult(`${amount} ${fromCurrency} = ${rate} ${toCurrency}`);
+    } catch(err){
+      console.log(err);
+    }
+
+  }
+
+  const handleSubmit = (e: { preventDefault: () => void; }) => {
+    e.preventDefault();
+    getExchangeRate()
+  }
+
+
   return (
     <main className="">
-      <form>
-      <div className="flex justify-center items-center">
-        <h1> currency converter</h1>
-        <div>
-          <label>Enter amount</label>
-          <input type="number" required/>
+      <form onSubmit={handleSubmit} className="">
+      <div className="flex items-center justify-center flex-col space-y-3 bg-[#0e1e52] rounded-2xl p-6 px-28 opacity-90 shadow-2xl">
+        <h1 className="converter-title text-5xl py-4 font-extrabold"> currency converter</h1>
+        <div className="flex flex-col items-center justify-center space-y-1">
+          <label className="text-2xl font-semibold">Enter amount</label>
+          <input
+                    type="number"
+                    className="text-black"
+                    value={amount}
+                    onChange={(e) => setAmount(+e.target.value)}
+                    required
+                />
         </div>
 
         <div>
-          <label>From</label>
+          <label className="text-1xl font-semibold">From</label>
           <img src={`https://flagsapi.com/${fromCurrency.substring(0,2)}/flat/64.png`} alt="from country flag"/>
-          <select onChange={e => setFromCurrency(e.target.value)}>
+          <select className="text-black" onChange={e => setFromCurrency(e.target.value)}>
             {currencyCodes.map(currency => (
-              <option key={currency} value={currency?? ""}>{currency? currency: fromCurrency}</option>
+              <option className="text-[#272626f5]" key={currency} value={currency?? ""}>{currency? currency: fromCurrency}</option>
             ))}
             
           </select>
@@ -62,20 +89,20 @@ export default function Home() {
                 </div>
 
         <div>
-          <label>To</label>
+          <label className="text-1xl font-semibold">To</label>
           <img src={`https://flagsapi.com/${toCurrency.substring(0,2)}/flat/64.png`} alt="to country flag"/>
-          <select onChange={e => setToCurrency(e.target.value)}>
+          <select className="text-black" onChange={e => setToCurrency(e.target.value)}>
           {currencyCodes.map(currency => (
-              <option key={currency} value={currency?? ""} defaultValue={toCurrency}>{currency? currency: toCurrency}</option>
+              <option className="text-[#272626f5]" key={currency} value={currency?? ""} defaultValue={toCurrency}>{currency? currency: toCurrency}</option>
             ))}
           </select>
         </div>
         <div>  
       </div>
-        <button type="submit">Convert </button>
+        <button type="submit" className="bg-[#15142d] p-3 px-20">Convert</button>
 
 
-        <p>1100$ = 500 euros</p>
+        <p className="text-4xl pt-6">{result}</p>
       </div>
       </form>
     </main>

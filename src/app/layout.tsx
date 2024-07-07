@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-//import "./globals.css";
+import "./globals.css";
+import Image from "next/image";
+
+
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,8 +18,23 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
+ 
     <html lang="en">
-      <body className="">{children}</body>
+      
+      <body className="bg-slate-900">
+
+      <Image className=""
+        alt={"Background Image"}
+        src="/bg.jpg"
+        sizes="100vw"
+        layout="fill"
+        style={{ zIndex: -1 }}
+      />
+      
+  
+        {children}
+        </body>
     </html>
+ 
   );
 }
